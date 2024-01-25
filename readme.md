@@ -27,8 +27,11 @@ pip install torchvision==0.15.2
 # <div align=center>Test</div>
 
 ## Test PyTorch Models Converted to TensorRT.
+Download image from [url](https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg).
+
 ```bash
-python main.py --model resnet50
+wget https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg -O golden_retrieval.jpg
+python main.py --model resnet50 --test_img golden_retrieval.jpg
 ```
 
 ## Inference Speed Comparison
