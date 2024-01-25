@@ -18,7 +18,7 @@ pip install tensorrt_bindings==8.6.1
 ```
 
 ### 3. Install torch-tensorrt and torchvision
-pytorch(2.0.1) will be installed together when torch-tensorrt is installed. All you need need to od is install the torchvision, manually.
+pytorch(2.0.1) will be installed together when torch-tensorrt is installed. Additional installation is only required for torchvision.
 
 ```bash
 pip install torch-tensorrt==1.4.0
