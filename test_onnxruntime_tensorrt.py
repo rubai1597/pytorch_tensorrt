@@ -7,7 +7,6 @@ import numpy as np
 from PIL import Image
 
 import torch
-from torchvision import transforms
 from torchvision.models.resnet import (
     resnet18,
     ResNet18_Weights,
