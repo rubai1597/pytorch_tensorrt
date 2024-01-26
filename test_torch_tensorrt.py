@@ -6,7 +6,6 @@ from argparse import ArgumentParser, Namespace
 from PIL import Image
 
 import torch
-from torchvision import transforms
 from torchvision.models.resnet import (
     resnet18,
     ResNet18_Weights,
@@ -53,10 +52,11 @@ def main(opt: Namespace) -> None:
     model_fp16 = model_fp16.half()
     scripted_module = torch.jit.script(model_fp16)
 
-    tensorrt_model_path = Path(f"{opt.model}.ts")
+    tensorrt_model_path = Path(f"./resource/models/torchscript_tensorrt/{opt.model}.ts")
+    tensorrt_model_path.parent.mkdir(exist_ok=True, parents=True)
     if tensorrt_model_path.exists():
         print("TensorRT model already exists. Skip Compiling.")
-        trt_ts_module = torch.jit.load(tensorrt_model_path)
+        trt_ts_module = torch.jit.load(str(tensorrt_model_path))
     else:
         print("Compiling TorchScript into TensorRT...")
         trt_ts_module = torch_tensorrt.compile(
@@ -74,7 +74,7 @@ def main(opt: Namespace) -> None:
         )
         torch.jit.save(trt_ts_module, tensorrt_model_path)
 
-    num_iter = 1000
+    num_iter: int = opt.num_iter
 
     print("PyTorch")
     float32_data = torch.ones([1, 3, 224, 224]).cuda()
@@ -142,6 +142,12 @@ if __name__ == "__main__":
             "resnet152",
         ],
         help="The model name to test.",
+    )
+    parser.add_argument(
+        "--num_iter",
+        type=int,
+        default=1000,
+        help="The number of iterations for testing inference speed.",
     )
     parser.add_argument(
         "--test_img",
